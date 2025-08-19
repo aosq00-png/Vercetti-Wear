@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vercetti Wear — Tienda GTA VI (MVP)</title>
+  <meta name="description" content="Vercetti Wear: moda retro-urbana inspirada en el universo de Vice City. Catálogo MVP con estilo neón y vibes ochenteras." />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --card:#151a28;
+      --accent:#ff4da6;
+      --accent-2:#22d3ee;
+      --text:#e5e7eb;
+      --muted:#9aa0ae;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    body{margin:0; background:var(--bg); color:var(--text); font-family:Rubik,sans-serif;}
+    header{background:linear-gradient(90deg,var(--accent),var(--accent-2)); padding:12px;}
+    header h1{margin:0;font-size:22px;}
+    .container{width:min(1000px,95%);margin:20px auto;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
+    .card{background:var(--card);padding:12px;border-radius:10px;box-shadow:var(--shadow);}
+    .card img{width:100%;border-radius:8px;}
+    .btn{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;margin-top:8px;}
+    #cart{position:fixed;top:0;right:0;width:300px;height:100%;background:var(--card);padding:12px;overflow:auto;transform:translateX(100%);transition:0.3s;}
+    #cart.open{transform:translateX(0);}
+    #cart h2{margin-top:0;}
+    #cartItems{display:flex;flex-direction:column;gap:8px;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🕶️ Vercetti Wear</h1>
+  </header>
+  <div class="container">
+    <h2>Catálogo Retro</h2>
+    <div class="grid" id="products"></div>
+  </div>
+  <div id="cart">
+    <h2>🛒 Carrito</h2>
+    <div id="cartItems"></div>
+    <p><strong>Total:</strong> <span id="total">€0.00</span></p>
+    <button class="btn" onclick="alert('Checkout desactivado en el MVP')">Finalizar compra</button>
+    <button class="btn" onclick="toggleCart()">Cerrar</button>
+  </div>
+  <script>
+    const products=[
+      {id:1,name:'Camiseta Neon Vice',price:24.90,img:'https://dummyimage.com/400x400/ff4da6/ffffff&text=Neon+Vice'},
+      {id:2,name:'Gorra Heist',price:18.00,img:'https://dummyimage.com/400x400/22d3ee/ffffff&text=Heist+Cap'},
+      {id:3,name:'Chaqueta Night Runner',price:64.00,img:'https://dummyimage.com/400x400/111420/ffffff&text=Night+Runner'},
+      {id:4,name:'Bandana Pulse',price:12.50,img:'https://dummyimage.com/400x400/f43f5e/ffffff&text=Pulse+Bandana'}
+    ];
+    const cart={};
+    const productsDiv=document.getElementById('products');
+    const cartDiv=document.getElementById('cartItems');
+    const totalSpan=document.getElementById('total');
+    function renderProducts(){
+      productsDiv.innerHTML='';
+      products.forEach(p=>{
+        const card=document.createElement('div');card.className='card';
+        card.innerHTML=`<img src="${p.img}" alt="${p.name}"><h3>${p.name}</h3><p>€${p.price.toFixed(2)}</p>`;
+        const btn=document.createElement('button');btn.className='btn';btn.textContent='Agregar al carrito';
+        btn.onclick=()=>addToCart(p);
+        card.appendChild(btn);
+        productsDiv.appendChild(card);
+      });
+    }
+    function addToCart(p){
+      if(!cart[p.id]) cart[p.id]={...p,qty:0};
+      cart[p.id].qty++;
+      renderCart();
+      toggleCart(true);
+    }
+    function renderCart(){
+      cartDiv.innerHTML='';
+      let total=0;
+      Object.values(cart).forEach(item=>{
+        total+=item.price*item.qty;
+        const div=document.createElement('div');div.className='card';
+        div.innerHTML=`${item.name} x${item.qty} - €${(item.price*item.qty).toFixed(2)}`;
+        cartDiv.appendChild(div);
+      });
+      totalSpan.textContent='€'+total.toFixed(2);
+    }
+    function toggleCart(forceOpen=false){
+      document.getElementById('cart').classList.toggle('open',forceOpen);
+    }
+    renderProducts();
+  </script>
+</body>
+</html>
