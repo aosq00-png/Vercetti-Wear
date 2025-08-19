@@ -2,90 +2,41 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vercetti Wear — Tienda GTA VI (MVP)</title>
-  <meta name="description" content="Vercetti Wear: moda retro-urbana inspirada en el universo de Vice City. Catálogo MVP con estilo neón y vibes ochenteras." />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23f43f5e'/><stop offset='1' stop-color='%2322d3ee'/></linearGradient></defs><rect width='64' height='64' rx='12' fill='%230b0d12'/><text x='50%' y='52%' font-family='Rubik' font-weight='800' font-size='26' text-anchor='middle' fill='white'>VW</text></svg>'">
-  <meta property="og:title" content="Vercetti Wear — GTA VI Retro Fashion" />
-  <meta property="og:description" content="Catálogo MVP de Vercetti Wear: ropa y accesorios retro-urbanos inspirados en Vice City." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://dummyimage.com/1200x630/0b0d12/ffffff.png&text=Vercetti+Wear" />
-  <meta name="theme-color" content="#0b0d12" />
-  <style>
-    :root{
-      --bg:#0b0d12;
-      --bg-2:#111420;
-      --card:#151a28;
-      --accent:#ff4da6;
-      --accent-2:#22d3ee;
-      --text:#e5e7eb;
-      --muted:#9aa0ae;
-      --shadow:0 10px 30px rgba(0,0,0,.35), 0 0 30px rgba(244,63,94,.08);
-      --radius:18px;
-    }
-    body{margin:0; background:radial-gradient(1200px 600px at 80% -10%,rgba(34,211,238,.15),transparent 60%), radial-gradient(900px 600px at -10% 0, rgba(244,63,94,.14), transparent 50%), var(--bg); color:var(--text); font-family:Rubik, sans-serif;}
-    a{color:inherit; text-decoration:none}
-    img{max-width:100%; display:block}
-    .container{width:min(1200px, 92vw); margin:0 auto}
-
-    header{position:sticky; top:0; z-index:50; backdrop-filter: blur(12px); background:linear-gradient(180deg, rgba(17,20,32,.9), rgba(17,20,32,.65)); border-bottom:1px solid rgba(255,255,255,.06)}
-    .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
-    .brand{display:flex; align-items:center; gap:12px}
-    .logo{width:48px; height:48px; border-radius:12px; background:conic-gradient(from 120deg, var(--accent), var(--accent-2)); display:grid; place-items:center; font-weight:900; color:white; box-shadow:0 0 20px rgba(255,77,166,.4), 0 0 20px rgba(34,211,238,.3)}
-    .brand h1{font-size:22px; margin:0; font-weight:800; letter-spacing:1px}
-    .tag{font-size:12px; color:var(--muted)}
-    .actions{display:flex; align-items:center; gap:10px}
-    .btn{border:none; border-radius:12px; padding:10px 14px; font-weight:600; background:rgba(255,255,255,0.06); color:var(--text); cursor:pointer; box-shadow:var(--shadow)}
-    .btn.primary{background:linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);}
-    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,.12)}
-    .btn.small{padding:8px 10px; border-radius:10px}
-    .cart-count{background:var(--accent-2); color:#001014; font-weight:800; padding:.5px 7px; border-radius:999px; font-size:12px}
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vercetti Wear</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <div class="container nav">
-      <div class="brand">
-        <div class="logo">VW</div>
-        <div>
-          <h1>Vercetti Wear</h1>
-          <div class="tag">Retro Fashion — Vice City Inspired</div>
-        </div>
-      </div>
-      <div class="actions">
-        <input id="search" class="input" placeholder="Buscar productos retro…"/>
-        <button class="btn ghost small" id="openCart">🛒 <span class="cart-count" id="cartCount">0</span></button>
-      </div>
-    </div>
+    <img src="logo.png" alt="Vercetti Wear Logo" class="logo" />
+    <h1>Vercetti Wear</h1>
+    <p>Retro Fashion — Vice City Inspired</p>
+    <input type="text" placeholder="Buscar productos retro..." />
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <article class="card hero-main" style="padding:20px;">
-        <h2 style="font-size:2rem; margin:0 0 10px">Bienvenido a <span style="color:var(--accent)">Vercetti Wear</span></h2>
-        <p>Moda urbana retro con vibes de Vice City. Este es tu catálogo MVP: explora, filtra y añade al carrito. El checkout real se activará más adelante.</p>
-      </article>
+  <main>
+    <section class="intro">
+      <h2>Bienvenido a <span class="neon">Vercetti Wear</span></h2>
+      <p>
+        Moda urbana retro con vibes de Vice City. <br />
+        Este es tu catálogo MVP: explora, filtra y añade al carrito. <br />
+        El checkout real se activará más adelante.
+      </p>
     </section>
 
-    <section id="grid" style="margin-top:20px">[Aquí se mostrarán los productos]</section>
-
-    <section id="contacto" style="margin-top:30px">
-      <h3>Contacto</h3>
-      <p>Email: <a href="mailto:hello@vercettiwear.com">hello@vercettiwear.com</a></p>
-      <p>Instagram / TikTok: @vercettiwear</p>
-    </section>
-
-    <section id="legal" style="margin-top:20px; font-size:12px; color:var(--muted)">
-      © <span id="year"></span> Vercetti Wear. Proyecto creativo de fans inspirado en Vice City. No afiliado con Rockstar Games.
+    <section class="products">
+      <p>[Aquí se mostrarán los productos]</p>
     </section>
   </main>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', ()=>{
-      document.querySelector('#year').textContent = new Date().getFullYear();
-    });
-  </script>
+  <footer>
+    <h3>Contacto</h3>
+    <p>Email: hello@vercettiwear.com</p>
+    <p>Instagram / TikTok: @vercettiwear</p>
+    <p class="disclaimer">
+      © 2025 Vercetti Wear. Proyecto creativo de fans inspirado en Vice City. No
+      afiliado con Rockstar Games.
+    </p>
+  </footer>
 </body>
 </html>
