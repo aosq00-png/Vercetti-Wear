@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vercetti Wear — Tienda GTA VI (MVP)</title>
+  <meta name="description" content="Vercetti Wear: moda retro-urbana inspirada en Vice City. Synthwave oscuro, productos con flow y carrito activado." />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon_vw.png" />
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --card:#151a28;
+      --accent:#ff4da6;
+      --accent-2:#22d3ee;
+      --text:#e5e7eb;
+      --muted:#9aa0ae;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    html,body{height:100%;margin:0;font-family:Rubik,sans-serif;color:var(--text);}
+    body::before{
+      content:'';
+      position:fixed; inset:0;
+      background:url('bg_synth_vw_mobile.png') center/cover no-repeat, radial-gradient(ellipse at top, rgba(255,77,166,.12), transparent 40%);
+      z-index:-2;
+    }
+    body::after{
+      content:'';
+      position:fixed; inset:0;
+      background:rgba(8,10,15,.55);
+      z-index:-1;
+    }
+    header{text-align:center; padding:24px 12px 8px;}
+    .logo-ambient{max-width:560px; width:70%; opacity:.7; filter:blur(0.4px); margin:0 auto 6px; display:block;}
+    h1{margin:0; font-size:clamp(20px,4vw,28px); color:#eaeaf7; font-weight:800; letter-spacing:.6px; opacity:.9}
+    .container{width:min(980px,92%); margin:18px auto 60px;}
+    .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:14px;}
+    .card{background:rgba(15,18,28,.7); backdrop-filter: blur(8px); padding:12px; border-radius:14px; box-shadow:var(--shadow); border:1px solid rgba(255,255,255,.06);}
+    .card img{width:100%; border-radius:10px;}
+    .price{font-weight:800;}
+    .btn{background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; margin-top:8px; font-weight:700;}
+    #cart{position:fixed; top:0; right:0; width:min(360px,92vw); height:100%; background:rgba(11,13,18,.9); border-left:1px solid rgba(255,255,255,.08); padding:12px; overflow:auto; transform:translateX(100%); transition:.3s; backdrop-filter: blur(10px);}
+    #cart.open{transform:translateX(0);}
+    #cart h2{margin:6px 0 10px;}
+    #cartItems{display:flex; flex-direction:column; gap:8px;}
+    .toolbar{display:flex; gap:8px; align-items:center; margin:8px 0 16px; flex-wrap:wrap;}
+    .search{flex:1; min-width:160px; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,.18); background:rgba(15,18,28,.6); color:var(--text);}
+    .muted{color:var(--muted);}
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo_vw_neon_large.png" alt="Vercetti Wear" class="logo-ambient" />
+    <h1>🕶️ Vercetti Wear</h1>
+  </header>
+
+  <main class="container">
+    <section class="toolbar">
+      <input id="q" class="search" placeholder="Buscar (camiseta, gorra, neon…)" />
+      <button class="btn" onclick="toggleCart(true)">🛒 Carrito <span id="cartCount">0</span></button>
+    </section>
+    <section>
+      <div class="grid" id="products"></div>
+    </section>
+  </main>
+
+  <aside id="cart">
+    <h2>🛒 Tu carrito</h2>
+    <div id="cartItems"></div>
+    <p><strong>Total:</strong> <span id="total">€0.00</span></p>
+    <button class="btn" onclick="alert('Checkout desactivado en el MVP')">Finalizar compra</button>
+    <button class="btn" onclick="toggleCart()">Cerrar</button>
+  </aside>
+
+  <script>
+    const products=[
+      {id:1,name:'Camiseta Neon Vice',price:24.90,img:'https://dummyimage.com/600x600/ff4da6/ffffff&text=Neon+Vice'},
+      {id:2,name:'Gorra Heist',price:18.00,img:'https://dummyimage.com/600x600/22d3ee/ffffff&text=Heist+Cap'},
+      {id:3,name:'Chaqueta Night Runner',price:64.00,img:'https://dummyimage.com/600x600/111420/ffffff&text=Night+Runner'},
+      {id:4,name:'Bandana Pulse',price:12.50,img:'https://dummyimage.com/600x600/f43f5e/ffffff&text=Pulse+Bandana'}
+    ];
+    const cart={};
+    const productsDiv=document.getElementById('products');
+    const cartDiv=document.getElementById('cartItems');
+    const totalSpan=document.getElementById('total');
+    const cartCount=document.getElementById('cartCount');
+    const q=document.getElementById('q');
+
+    function renderProducts(list=products){
+      productsDiv.innerHTML='';
+      list.forEach(p=>{
+        const card=document.createElement('div');card.className='card';
+        card.innerHTML=`<img src="${p.img}" alt="${p.name}"><h3>${p.name}</h3><p class='price'>€${p.price.toFixed(2)}</p>`;
+        const btn=document.createElement('button');btn.className='btn';btn.textContent='Agregar al carrito';
+        btn.onclick=()=>addToCart(p);
+        card.appendChild(btn);
+        productsDiv.appendChild(card);
+      });
+    }
+
+    function addToCart(p){
+      if(!cart[p.id]) cart[p.id]={...p,qty:0};
+      cart[p.id].qty++;
+      renderCart();
+      toggleCart(true);
+    }
+
+    function renderCart(){
+      cartDiv.innerHTML='';
+      let total=0, count=0;
+      Object.values(cart).forEach(item=>{
+        total+=item.price*item.qty; count+=item.qty;
+        const div=document.createElement('div');div.className='card';
+        div.innerHTML=`${item.name} x${item.qty} — €${(item.price*item.qty).toFixed(2)}`;
+        cartDiv.appendChild(div);
+      });
+      totalSpan.textContent='€'+total.toFixed(2);
+      cartCount.textContent=count;
+    }
+
+    function toggleCart(forceOpen=false){
+      document.getElementById('cart').classList.toggle('open',forceOpen);
+    }
+
+    q.addEventListener('input', e=>{
+      const s=e.target.value.toLowerCase();
+      const filtered=products.filter(p=> (p.name.toLowerCase().includes(s)));
+      renderProducts(filtered);
+    });
+
+    renderProducts();
+  </script>
+</body>
+</html>
